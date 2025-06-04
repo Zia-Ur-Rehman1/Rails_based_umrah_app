@@ -1,3 +1,4 @@
+<turbo-frame id="hotel_form">
 <%= form_with(model: hotel, class: "max-w-6xl mx-auto my-10 p-8 bg-white rounded-2xl shadow-lg ring-1 ring-gray-200") do |form| %>
   <% if hotel.errors.any? %>
     <div class="mb-8 rounded-lg border border-red-200 bg-red-50 p-6">
@@ -119,4 +120,8 @@
     <%= form.submit (hotel.persisted? ? "Update Hotel" : "Create Hotel"),
       class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
   </div>
+  <%= link_to "Cancel", hotels_path, 
+            class: "btn-secondary",
+            data: { turbo_frame: "hotel_form" } %>
 <% end %>
+</turbo-frame>

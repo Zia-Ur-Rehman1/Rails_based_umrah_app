@@ -1,32 +1,34 @@
-<div id="<%= dom_id hotel %>">
-  <p>
-    <strong>City:</strong>
-    <%= hotel.city %>
-  </p>
+<%# app/views/hotels/_hotel.html.erb %>
+<turbo-frame id="<%= dom_id(hotel) %>" class="block border rounded-lg p-4 m-4 bg-white shadow-sm hover:shadow-md transition-shadow">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+    <%# Left Column - Basic Info %>
+    <div>
+      <h3 class="font-bold text-lg text-blue-800 mb-2"><%= hotel.name %></h3>
+      <div class="space-y-2 text-sm">
+        <p><span class="font-medium">City:</span> <%= Hotel.cities.key(hotel.city)&.titleize || hotel.city %></p>
+        <p><span class="font-medium">Category:</span> <%= Hotel.categories.key(hotel.category)&.titleize || hotel.category %></p>
+        <p><span class="font-medium">Distance:</span> <%= hotel.distance %></p>
+      </div>
+    </div>
 
-  <p>
-    <strong>Name:</strong>
-    <%= hotel.name %>
-  </p>
+    <%# Right Column - Additional Info %>
+    <div>
+      <div class="space-y-2 text-sm">
+        <p><span class="font-medium">Location:</span> <%= hotel.location %></p>
+        <p><span class="font-medium">Agency:</span> <%= hotel.agency %></p>
+        <p><span class="font-medium">Contact:</span> <%= hotel.agency_contact %></p>
+      </div>
+    </div>
+  </div>
 
-  <p>
-    <strong>Category:</strong>
-    <%= hotel.category %>
-  </p>
-
-  <p>
-    <strong>Distance:</strong>
-    <%= hotel.distance %>
-  </p>
-
-  <p>
-    <strong>Agency:</strong>
-    <%= hotel.agency %>
-  </p>
-
-  <p>
-    <strong>Agency contact:</strong>
-    <%= hotel.agency_contact %>
-  </p>
-
-</div>
+  <%# Action Buttons %>
+  <div class="mt-4 flex justify-end space-x-2">
+    <%= link_to "Edit", edit_hotel_path(hotel), 
+                          class: "px-3 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm", 
+                          data: { turbo_frame: "hotel_form" } %>
+    <%= button_to "Delete", hotel, method: :delete,
+                  class: "px-3 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 text-sm",
+                  form: { data: { turbo_confirm: "Are you sure you want to delete this hotel?" } } %>
+  </div>
+  
+</turbo-frame>

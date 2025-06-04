@@ -1,10 +1,6 @@
 <p style="color: green"><%= notice %></p>
-
+<%# Turbo Frame for the form (appears above table) %>
+<turbo-frame id="hotel_form" class="block mb-8">
+  <%# Form will appear here when "New Hotel" or "Edit" is clicked %>
+</turbo-frame>
 <%= render @hotel %>
-
-<div>
-  <%= link_to "Edit this hotel", edit_hotel_path(@hotel) %> |
-  <%= link_to "Back to hotels", hotels_path %>
-
-  <%= button_to "Destroy this hotel", @hotel, method: :delete %>
-</div>

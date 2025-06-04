@@ -30,35 +30,44 @@ class HotelsController < ApplicationController
 
     respond_to do |format|
       if @hotel.save
+        format.turbo_stream do
+          render turbo_stream: [
+            turbo_stream.append("hotels", partial: "hotels/hotel", locals: { hotel: @hotel }),
+            turbo_stream.replace("new_hotel", partial: "hotels/form", locals: { hotel: Hotel.new })
+          ]
+        end
         format.html { redirect_to @hotel, notice: "Hotel was successfully created." }
-        format.json { render :show, status: :created, location: @hotel }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("hotel_form", partial: "hotels/form", locals: { hotel: @hotel })
+        end
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @hotel.errors, status: :unprocessable_entity }
       end
     end
   end
-
   # PATCH/PUT /hotels/1 or /hotels/1.json
   def update
     respond_to do |format|
       if @hotel.update(hotel_params)
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace(@hotel, partial: "hotels/hotel", locals: { hotel: @hotel })
+        end
         format.html { redirect_to @hotel, notice: "Hotel was successfully updated." }
-        format.json { render :show, status: :ok, location: @hotel }
       else
+        format.turbo_stream do
+          render turbo_stream: turbo_stream.replace("hotel_form", partial: "hotels/form", locals: { hotel: @hotel })
+        end
         format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @hotel.errors, status: :unprocessable_entity }
       end
     end
   end
-
   # DELETE /hotels/1 or /hotels/1.json
   def destroy
     @hotel.destroy!
 
     respond_to do |format|
-      format.html { redirect_to hotels_path, status: :see_other, notice: "Hotel was successfully destroyed." }
-      format.json { head :no_content }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove(@hotel) }
+      format.html { redirect_to hotels_url, notice: "Hotel was successfully destroyed." }
     end
   end
 
@@ -77,7 +86,7 @@ class HotelsController < ApplicationController
     end
 
     def build_default_room_types
-      RoomType::DEFAULT_ROOM_TYPES.each do |room_type|
+      RoomType.all.each do |room_type|
         @hotel.hotel_rooms.build(room_type: room_type)
       end
     end
