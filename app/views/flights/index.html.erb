@@ -1,0 +1,21 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Flights" %>
+
+<h1>Flights</h1>
+<%# app/views/flights/index.html.erb %>
+<%= button_to "Scrape Latest Flight Deals", 
+              scrape_flights_path, 
+              method: :post,
+              class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
+              data: { turbo: false, confirm: "This will scrape latest flight deals. Continue?" } %>
+<div id="flights">
+  <% @flights.each do |flight| %>
+    <%= render flight %>
+    <p>
+      <%= link_to "Show this flight", flight %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New flight", new_flight_path %>

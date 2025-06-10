@@ -3,11 +3,13 @@ class Hotel < ApplicationRecord
   # Star-based categories (1-5 stars)
   enum :category, [ :"1_star", :"2_star", :"3_star", :"4_star", :"5_star", :"Economy", :"Building" ]
   # Room types
-  enum :city, { Makkah: 1, Medina: 2 }
+  enum :city, { Makkah: 0, Madinah: 1 }
 
   # Validations
   validates :name, presence: true
   validates :distance, presence: true
+  validates :city, presence: true
+  validates :category, presence: true
 
   # Optional fields
   validates :agency, presence: false

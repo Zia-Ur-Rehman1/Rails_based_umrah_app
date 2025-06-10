@@ -1,0 +1,34 @@
+<!-- filepath: /home/dev/projects/test_projects/umrah/umrah_app/app/views/hotels/_room_types_form.html.erb -->
+<div class="mt-10 border-t pt-8">
+  <h3 class="text-lg font-semibold text-gray-800 mb-6">Room Types & Pricing</h3>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <%= form.fields_for :hotel_rooms do |hr| %>
+      <div data-controller="hotels" class="border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition">
+        <div class="flex justify-between items-start mb-3">
+          <h4 class="font-medium text-sm text-gray-800">
+            <%= hr.object.room_type&.name || "Room Type" %>
+          </h4>
+          <%= hr.hidden_field :room_type_id %>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <%= hr.label :base_price, "Price (SAR)", class: "block text-sm font-medium text-gray-700 mb-1" %>
+            <div class="flex items-center gap-3">
+              <%= hr.number_field :base_price, step: 0.01,
+                class: "block w-full rounded-md border-gray-300 pl-3 pr-12 py-2",
+                data: { hotels_target: "sar", action: "input->hotels#convert load->hotels#convert turbo:load->hotels#convert" } %>
+              
+            </div>
+            <span class="text-sm text-gray-500 flex items-center">
+                PKR: <span data-hotels-target="pkr" class="ml-1">Rs 0.00</span>
+              </span>
+          </div>
+          <div class="flex items-center">
+            <%= hr.check_box :_destroy, class: "h-4 w-4 text-blue-600 rounded border-gray-300" %>
+            <%= hr.label :_destroy, "Remove this room", class: "ml-2 block text-sm text-gray-700" %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

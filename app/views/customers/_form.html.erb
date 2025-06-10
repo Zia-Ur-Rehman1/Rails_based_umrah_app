@@ -1,0 +1,37 @@
+<%# app/views/customers/_form.html.erb %>
+<%= form_with(model: customer, class: "space-y-4") do |form| %>
+  <% if customer.errors.any? %>
+    <div class="bg-red-50 text-red-600 p-4 rounded-lg">
+      <h2 class="font-bold"><%= pluralize(customer.errors.count, "error") %> prohibited this customer from being saved:</h2>
+      <ul class="mt-2 list-disc list-inside">
+        <% customer.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- Column 1 -->
+    <div class="space-y-4">
+      <div>
+        <%= form.label :name, class: "block font-medium" %>
+        <%= form.text_field :name, class: "w-full rounded border-gray-300" %>
+      </div>
+
+      <div>
+        <%= form.label :email, class: "block font-medium" %>
+        <%= form.email_field :email, class: "w-full rounded border-gray-300" %>
+      </div>
+
+      <div>
+        <%= form.label :phone, class: "block font-medium" %>
+        <%= form.telephone_field :phone, class: "w-full rounded border-gray-300" %>
+      </div>
+
+    </div>
+
+  <div class="pt-4">
+    <%= form.submit class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+  </div>
+<% end %>

@@ -18,110 +18,68 @@
     </div>
   <% end %>
 
-  <div class="grid grid-cols-2 gap-8">
-    <!-- Left Column -->
-    <div class="space-y-6">
-      <!-- City -->
-      <div>
-        <%= form.label :city, "City", class: "block text-sm font-semibold text-gray-700 mb-1" %>
-        <%= form.select :city, Hotel.cities.keys.map { |k| [k.titleize, k] }, { include_blank: "Select City" },
-          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
-      </div>
-
-      <!-- Name -->
-      <div>
-        <%= form.label :name, class: "block text-sm font-semibold text-gray-700 mb-1" %>
-        <%= form.text_field :name, placeholder: "Hotel Name",
-          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
-      </div>
-
-      <!-- Category -->
-      <div>
-        <%= form.label :category, class: "block text-sm font-semibold text-gray-700 mb-1" %>
-        <%= form.select :category,
-            Hotel.categories.keys.map { |k| [k.titleize, k] },
-            { include_blank: "Select Category" },
-            class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
-      </div>
-
-      <!-- Distance -->
-      <div>
-        <%= form.label :distance, class: "block text-sm font-semibold text-gray-700 mb-1" %>
-        <%= form.text_field :distance, placeholder: "Distance (e.g. 500m)",
-          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
-      </div>
+  <!-- Main Fields Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div>
+      <%= form.label :city, "City", class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.select :city, Hotel.cities.keys.map { |k| [k.titleize, k] }, { include_blank: "Select City" },
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
     </div>
-
-    <!-- Right Column -->
-    <div class="space-y-6">
-      <!-- Location -->
-      <div>
-        <%= form.label :location, class: "block text-sm font-semibold text-gray-700 mb-1" %>
-        <%= form.text_field :location, placeholder: "Location",
+    <div>
+      <%= form.label :name, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.text_field :name, placeholder: "Hotel Name",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :category, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.select :category,
+          Hotel.categories.keys.map { |k| [k.titleize, k] },
+          { include_blank: "Select Category" },
           class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
-      </div>
-
-      <!-- Agency -->
-      <div>
-        <%= form.label :agency, class: "block text-sm font-semibold text-gray-700 mb-1" %>
-        <%= form.text_field :agency, placeholder: "Agency Name",
-          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
-      </div>
-
-      <!-- Agency Contact -->
-      <div>
-        <%= form.label :agency_contact, class: "block text-sm font-semibold text-gray-700 mb-1" %>
-        <%= form.text_field :agency_contact, placeholder: "Agency Contact",
-          class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
-      </div>
+    </div>
+    <div>
+      <%= form.label :distance, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.text_field :distance, placeholder: "Distance (e.g. 500m)",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :landmark, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.text_field :landmark, placeholder: "Landmark",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :gate_proximity, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.text_field :gate_proximity, placeholder: "Gate Proximity",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :transport_access, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.text_field :transport_access, placeholder: "Transport Access",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :agency, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.text_field :agency, placeholder: "Agency Name",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
+    </div>
+    <div>
+      <%= form.label :agency_contact, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+      <%= form.text_field :agency_contact, placeholder: "Agency Contact",
+        class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base px-3 py-2" %>
     </div>
   </div>
 
   <!-- Room Types Section - Full Width Below -->
-  <div class="mt-10 border-t pt-8">
-    <h3 class="text-lg font-semibold text-gray-800 mb-6">Room Types & Pricing</h3>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <%= form.fields_for :hotel_rooms do |hr| %>
-        <div data-controller="hotels"  class="border rounded-lg p-4 bg-gray-50 hover:bg-gray-100 transition">
-          <div class="flex justify-between items-start mb-3">
-            <h4 class="font-medium text-gray-800">
-              <%= hr.object.room_type&.name || "Room Type" %>
-            </h4>
-            <%= hr.hidden_field :room_type_id %>
-          </div>
-          
-          <div class="space-y-4">
-            <div>
-              <%= hr.label :base_price, "Price (SAR)", class: "block text-sm font-medium text-gray-700" %>
-              <div  class="mt-1 relative rounded-md shadow-sm">
-                <%= hr.number_field :base_price, step: 0.01, 
-                  class: "block w-full rounded-md border-gray-300 pl-3 pr-12 py-2",
-                  data: { hotels_target: "sar", action: "input->hotels#convert load->hotels#convert turbo:load->hotels#convert" } %>
-              </div>
-            </div>
-          <div class="ml-4 mt-6 text-sm text-gray-500">
-            <span>PKR: </span>
-            <span data-hotels-target="pkr">Rs 0.00</span>
-          </div>
-            <div class="flex items-center">
-              <%= hr.check_box :_destroy, class: "h-4 w-4 text-blue-600 rounded border-gray-300",
-              checked: hotel.persisted?  && hr.object.base_price.blank?%>
-              <%= hr.label :_destroy, "Remove this room", class: "ml-2 block text-sm text-gray-700" %>
-            </div>
-          </div>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
+  <%= render 'hotels/room_types_form', form: form %>
   <!-- Submit Button - Centered -->
   <div class="mt-10 text-center">
-    <%= form.submit (hotel.persisted? ? "Update Hotel" : "Create Hotel"),
+
+  <%= link_to "Cancel", hotels_path,
+            class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500",
+            data: { turbo_frame: "hotel_form" } %>
+             <%= form.submit (hotel.persisted? ? "Update Hotel" : "Create Hotel"),
       class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
   </div>
-  <%= link_to "Cancel", hotels_path, 
-            class: "btn-secondary",
-            data: { turbo_frame: "hotel_form" } %>
+
 <% end %>
 </turbo-frame>
