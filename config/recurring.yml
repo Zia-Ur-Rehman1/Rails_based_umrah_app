@@ -8,3 +8,8 @@
 #     command: "SoftDeletedRecord.due.delete_all"
 #     priority: 2
 #     schedule: at 5am every day
+development:
+  periodic_parsing:
+    class: AlsaboorFlightScraperJob
+    queue: background
+    schedule: every day at 10 am on Asia/Karachi #Fugit gem used to define the schedule

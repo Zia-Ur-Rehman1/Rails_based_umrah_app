@@ -1,21 +1,45 @@
-<p style="color: green"><%= notice %></p>
-
+<p class="text-green-600"><%= notice %></p>
 <% content_for :title, "Flights" %>
 
-<h1>Flights</h1>
-<%# app/views/flights/index.html.erb %>
-<%= button_to "Scrape Latest Flight Deals", 
-              scrape_flights_path, 
-              method: :post,
-              class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
-              data: { turbo: false, confirm: "This will scrape latest flight deals. Continue?" } %>
-<div id="flights">
-  <% @flights.each do |flight| %>
-    <%= render flight %>
-    <p>
-      <%= link_to "Show this flight", flight %>
-    </p>
-  <% end %>
+<div class="flex justify-between items-center mb-6">
+  <h1 class="text-2xl font-bold">Flights</h1>
+  <%= link_to "New Flight", new_flight_path,
+              class: "text-green-600 hover:text-green-900 mr-4 px-4 py-2 bg-green-100 rounded m-4",
+              data: { turbo_frame: "flight_form" } %>
 </div>
 
-<%= link_to "New flight", new_flight_path %>
+<turbo-frame id="flight_form" class="block mb-8"></turbo-frame>
+
+<div class="overflow-x-auto rounded-lg shadow">
+  <table class="min-w-full bg-white divide-y divide-gray-200">
+    <thead class="bg-gray-50">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Airline</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Flight Number</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Route</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departure</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Arrival</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Luggage</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Seats</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Agency</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100" id="flights">
+      <% @flights.each do |flight| %>
+        <% if flight.round_trip? && flight == flight.connected_flight&.return_flight %>
+          <tr class="bg-blue-50">
+            <td colspan="9" class="px-6 py-2 text-sm font-medium text-blue-800">
+              Round Trip: <%= flight.airline %> | <%= flight.departure_airport %> ↔ <%= flight.arrival_airport %> ↔ <%= flight.connected_flight&.arrival_airport %> | <%= flight.unique_code%>
+            </td>
+          </tr>
+          <%= render flight %>
+          <%= render flight.connected_flight if flight.connected_flight %>
+          <tr class="bg-blue-50">
+            <td colspan="9" class="px-6 py-2"></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+</div>

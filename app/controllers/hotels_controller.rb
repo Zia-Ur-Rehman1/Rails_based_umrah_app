@@ -27,13 +27,14 @@ class HotelsController < ApplicationController
   # POST /hotels or /hotels.json
   def create
     @hotel = Hotel.new(hotel_params)
-
+    new_hotel = Hotel.new
+    build_default_room_types(new_hotel)
     respond_to do |format|
       if @hotel.save
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.append("hotels", partial: "hotels/hotel", locals: { hotel: @hotel }),
-            turbo_stream.replace("new_hotel", partial: "hotels/form", locals: { hotel: Hotel.new })
+            turbo_stream.replace("hotel_form", partial: "hotels/form", locals: { hotel: new_hotel })
           ]
         end
         format.html { redirect_to @hotel, notice: "Hotel was successfully created." }
@@ -47,10 +48,16 @@ class HotelsController < ApplicationController
   end
   # PATCH/PUT /hotels/1 or /hotels/1.json
   def update
+    new_hotel = Hotel.new
+    build_default_room_types(new_hotel)
+
     respond_to do |format|
       if @hotel.update(hotel_params)
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace(@hotel, partial: "hotels/hotel", locals: { hotel: @hotel })
+          render turbo_stream: [
+            turbo_stream.replace(@hotel, partial: "hotels/hotel", locals: { hotel: @hotel }),
+            turbo_stream.replace("hotel_form", partial: "hotels/form", locals: { hotel: new_hotel })
+          ]
         end
         format.html { redirect_to @hotel, notice: "Hotel was successfully updated." }
       else
@@ -64,15 +71,14 @@ class HotelsController < ApplicationController
   # DELETE /hotels/1 or /hotels/1.json
   def destroy
     @hotel.destroy!
-
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove(@hotel) }
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("hotel_#{@hotel.id}") }
       format.html { redirect_to hotels_url, notice: "Hotel was successfully destroyed." }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+
     def set_hotel
       @hotel = Hotel.find(params[:id])
     end
@@ -80,14 +86,15 @@ class HotelsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def hotel_params
       params.require(:hotel).permit(
-      :name, :city, :category, :distance, :agency, :agency_contact, :landmark, :gate_proximity, :transport_access,
-      hotel_rooms_attributes: [ :id, :room_type_id, :base_price, :_destroy ]
-    )
+        :name, :city, :category, :distance, :agency, :agency_contact, :landmark, :gate_proximity, :transport_access,
+        hotel_rooms_attributes: [ :id, :room_type_id, :base_price, :_destroy ]
+      )
     end
 
-    def build_default_room_types
+    def build_default_room_types(hotel = nil)
+      hotel ||= @hotel
       RoomType.all.each do |room_type|
-        @hotel.hotel_rooms.build(room_type: room_type)
+        hotel.hotel_rooms.build(room_type: room_type)
       end
     end
 end

@@ -1,0 +1,33 @@
+<turbo-frame id="post_form">
+<%= form_with(model: post, class: "max-w-6xl mx-auto my-10 p-8 bg-white rounded-2xl shadow-lg ring-1 ring-gray-200") do |form| %>
+  <% if post.errors.any? %>
+    <div class="mb-8 rounded-lg border border-red-200 bg-red-50 p-6">
+      <div class="flex items-center mb-2">
+        <svg class="h-6 w-6 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-1.414 1.414M6.343 17.657l-1.414-1.414M5.636 5.636l1.414 1.414M17.657 17.657l1.414-1.414M12 8v4m0 4h.01"></path>
+        </svg>
+        <h2 class="text-lg font-semibold text-red-700">
+          <%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:
+        </h2>
+      </div>
+      <ul class="list-disc list-inside text-red-600 ml-8">
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div>
+          <%= form.label :title, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :title, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+            </div>
+
+  <div class="mt-10 text-center space-x-4">
+    <%= link_to "Cancel", url_for(action: :index), class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" %>
+    <%= form.submit (post.persisted? ? "Update" : "Create"), class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
+  </div>
+<% end %>
+</turbo-frame>

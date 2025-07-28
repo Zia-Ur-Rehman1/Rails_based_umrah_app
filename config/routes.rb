@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :posts
   resources :flights
   resources :customers
   resources :hotels
@@ -15,5 +16,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "hotels#index"
+
+  mount MissionControl::Jobs::Engine, at: "/jobs"
 end
-s

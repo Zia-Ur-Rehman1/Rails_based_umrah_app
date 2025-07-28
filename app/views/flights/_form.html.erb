@@ -1,9 +1,16 @@
-<%= form_with(model: flight) do |form| %>
+<turbo-frame id="flight_form">
+<%= form_with(model: flight, class: "max-w-6xl mx-auto my-10 p-8 bg-white rounded-2xl shadow-lg ring-1 ring-gray-200") do |form| %>
   <% if flight.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(flight.errors.count, "error") %> prohibited this flight from being saved:</h2>
-
-      <ul>
+    <div class="mb-8 rounded-lg border border-red-200 bg-red-50 p-6">
+      <div class="flex items-center mb-2">
+        <svg class="h-6 w-6 text-red-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-1.414 1.414M6.343 17.657l-1.414-1.414M5.636 5.636l1.414 1.414M17.657 17.657l1.414-1.414M12 8v4m0 4h.01"></path>
+        </svg>
+        <h2 class="text-lg font-semibold text-red-700">
+          <%= pluralize(flight.errors.count, "error") %> prohibited this flight from being saved:
+        </h2>
+      </div>
+      <ul class="list-disc list-inside text-red-600 ml-8">
         <% flight.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
@@ -11,47 +18,64 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :airline, style: "display: block" %>
-    <%= form.text_field :airline %>
-  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div>
+          <%= form.label :airline, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :airline, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :flight_number, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :flight_number, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :departure_airport, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :departure_airport, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :arrival_airport, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :arrival_airport, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :departure_time, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.datetime_field :departure_time, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :arrival_time, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.datetime_field :arrival_time, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :luggage, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :luggage, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :seats, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.number_field :seats, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :trip_type, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.number_field :trip_type, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :connected_flight_id, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :connected_flight_id, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :unique_code, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :unique_code, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :agency, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.text_field :agency, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+                        <div>
+          <%= form.label :days, class: "block text-sm font-semibold text-gray-700 mb-1" %>
+          <%= form.number_field :days, class: "block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 px-3 py-2" %>
+        </div>
+            </div>
 
-  <div>
-    <%= form.label :flight_number, style: "display: block" %>
-    <%= form.text_field :flight_number %>
-  </div>
-
-  <div>
-    <%= form.label :departure_airport, style: "display: block" %>
-    <%= form.text_field :departure_airport %>
-  </div>
-
-  <div>
-    <%= form.label :arrival_airport, style: "display: block" %>
-    <%= form.text_field :arrival_airport %>
-  </div>
-
-  <div>
-    <%= form.label :departure_time, style: "display: block" %>
-    <%= form.datetime_field :departure_time %>
-  </div>
-
-  <div>
-    <%= form.label :arrival_time, style: "display: block" %>
-    <%= form.datetime_field :arrival_time %>
-  </div>
-
-  <div>
-    <%= form.label :luggage, style: "display: block" %>
-    <%= form.text_field :luggage %>
-  </div>
-
-  <div>
-    <%= form.label :meal, style: "display: block" %>
-    <%= form.checkbox :meal %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+  <div class="mt-10 text-center space-x-4">
+    <%= link_to "Cancel", url_for(action: :index), class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-orange-600 hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" %>
+    <%= form.submit (flight.persisted? ? "Update" : "Create"), class: "inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" %>
   </div>
 <% end %>
+</turbo-frame>

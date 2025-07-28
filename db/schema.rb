@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_06_092603) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_12_214144) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,9 +30,15 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_092603) do
     t.datetime "departure_time"
     t.datetime "arrival_time"
     t.string "luggage"
-    t.boolean "meal"
+    t.integer "seats"
+    t.integer "trip_type"
+    t.bigint "connected_flight_id"
+    t.string "unique_code"
+    t.string "agency"
+    t.integer "days"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["connected_flight_id"], name: "index_flights_on_connected_flight_id"
   end
 
   create_table "hotel_rooms", force: :cascade do |t|
@@ -59,6 +65,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_092603) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "room_prices", force: :cascade do |t|
     t.bigint "hotel_room_id", null: false
     t.date "date"
@@ -74,6 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_06_092603) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "flights", "flights", column: "connected_flight_id", on_delete: :cascade
   add_foreign_key "hotel_rooms", "hotels"
   add_foreign_key "hotel_rooms", "room_types"
   add_foreign_key "room_prices", "hotel_rooms"

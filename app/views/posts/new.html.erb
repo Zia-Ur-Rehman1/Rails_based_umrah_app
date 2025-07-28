@@ -1,12 +1,12 @@
 <p class="text-green-600"><%= notice %></p>
-<% content_for :title, "New flight" %>
+<% content_for :title, "New post" %>
 
 <div class="flex justify-between items-center mb-6">
-  <h1 class="text-2xl font-bold">New flight</h1>
-  <%= render "form", flight: @flight %>
+  <h1 class="text-2xl font-bold">New post</h1>
+  <%= render "form", post: @post %>
 </div>
 
 <div>
-  <%= link_to "Back to flights", flights_path,
+  <%= link_to "Back to posts", posts_path,
               class: "text-gray-600 hover:text-gray-900 underline" %>
 </div>

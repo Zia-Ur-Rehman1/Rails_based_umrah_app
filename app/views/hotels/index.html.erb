@@ -1,6 +1,7 @@
 <%# app/views/hotels/index.html.erb %>
 <p class="text-green-600"><%= notice %></p>
 <% content_for :title, "Hotels" %>
+
 <div data-controller="hotels" data-hotels-rate-value="<%= t('exchange_rate') %>">
 <div class="flex justify-between items-center mb-6">
   <h1 class="text-2xl font-bold">Hotels</h1>
@@ -32,40 +33,7 @@
     </thead>
     <tbody class="divide-y divide-gray-100" id="hotels">
       <% @hotels.each do |hotel| %>
-        <turbo-frame id="<%= dom_id(hotel) %>">
-          <tr class="hover:bg-gray-50 transition">
-            <td class="px-6 py-4 whitespace-nowrap font-semibold text-gray-900"><%= hotel.name %></td>
-            <td class="px-6 py-4 whitespace-nowrap"><%= hotel.city.titleize %></td>
-            <td class="px-6 py-4 whitespace-nowrap"><%= hotel.category.titleize %></td>
-            <td class="px-6 py-4 whitespace-nowrap"><%= hotel.distance %></td>
-            <td class="px-6 py-4 whitespace-nowrap"><%= hotel.landmark %></td>
-            <td class="px-6 py-4 whitespace-nowrap"><%= hotel.gate_proximity %></td>
-            <td class="px-6 py-4 whitespace-nowrap"><%= hotel.transport_access %></td>
-            <td class="px-6 py-4 whitespace-nowrap"><%= hotel.agency %></td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <ul>
-                <% hotel.hotel_rooms.each do |hr| %>
-                  <li>
-                    <span class="font-medium"><%= hr.room_type&.name %></span>
-                    <span class="ml-2 text-gray-500">SAR <%= hr.base_price %></span>
-                    <span class="ml-2 text-gray-800">PKR <%= hr.base_price * t("exchange_rate") %></span>
-
-                  </li>
-                <% end %>
-              </ul>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <%= link_to "Show", hotel, class: "text-blue-600 hover:text-blue-900 mr-2" %>
-              <%= link_to "Edit", edit_hotel_path(hotel), 
-                          class: "text-yellow-600 hover:text-yellow-900 mr-2", 
-                          data: { turbo_frame: "hotel_form" } %>
-              <%= link_to "Delete", hotel, 
-                          method: :delete, 
-                          class: "text-red-600 hover:text-red-900",
-                          data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
-            </td>
-          </tr>
-        </turbo-frame>
+        <%= render hotel %>
       <% end %>
     </tbody>
   </table>
