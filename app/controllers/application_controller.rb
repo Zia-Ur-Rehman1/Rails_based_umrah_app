@@ -14,5 +14,6 @@ end
 # rails g migration CreateUmrahPackages customer:references name:string total_price:decimal start_date:date end_date:date status:string
 # rails g migration CreatePassports customer:references number:string issue_date:date expiry_date:date nationality:string
 # rails g migration CreateVisas umrah_package:references number:string issue_date:date expiry_date:date status:string
-# rails g scaffold CreateFlights umrah_package:references airline:string flight_number:string departure_airport:string arrival_airport:string departure_time:datetime arrival_time:datetime luggage:string meal:boolean
+# rails g scaffold CreateFlights airline:string flight_number:string departure_airport:string arrival_airport:stringdeparture_time:datetime arrival_time:datetime luggage:string seats:integer trip_type:integerconnected_flight:references unique_code:string agency:string
+
 # rails generate scaffold Customer name:string email:string phone:string

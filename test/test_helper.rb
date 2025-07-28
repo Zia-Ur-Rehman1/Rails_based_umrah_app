@@ -13,3 +13,9 @@ module ActiveSupport
     # Add more helper methods to be used by all tests here...
   end
 end
+
+module Turbo::TestAssertiosns::IntegrationTestAssertions
+  def assert_turbo_stream_contains_text(text)
+    assert_includes @response.body, text, "Expected Turbo Stream response to include '#{text}'"
+  end
+end
