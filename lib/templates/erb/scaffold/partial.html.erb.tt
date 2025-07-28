@@ -1,0 +1,29 @@
+<tr id="<%%= dom_id <%= singular_name %> %>" class="hover:bg-gray-50 transition">
+  <% attributes.reject(&:password_digest?).each do |attribute| -%>
+    <td class="px-6 py-4 whitespace-nowrap">
+      <% if attribute.attachment? -%>
+        <%%= link_to <%= singular_name %>.<%= attribute.column_name %>.filename,
+                     <%= singular_name %>.<%= attribute.column_name %>
+              if <%= singular_name %>.<%= attribute.column_name %>.attached? %>
+      <% elsif attribute.attachments? -%>
+        <%% <%= singular_name %>.<%= attribute.column_name %>.each do |file| %>
+          <div><%%= link_to file.filename, file %></div>
+        <%% end %>
+      <% else -%>
+        <%%= <%= singular_name %>.<%= attribute.column_name %> %>
+      <% end -%>
+    </td>
+  <% end -%>
+
+  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+    <%%= link_to "Show", <%= model_resource_name(singular_name) %>,
+                class: "text-blue-600 hover:text-blue-900 mr-2" %>
+    <%%= link_to "Edit", <%= edit_helper(type: :path) %>,
+                class: "text-yellow-600 hover:text-yellow-900 mr-2",
+                data: { turbo_frame: "<%= singular_table_name %>_form" } %>
+    <%%= link_to "Delete", <%= model_resource_name(singular_name) %>,
+                method: :delete,
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                class: "text-red-600 hover:text-red-900" %>
+  </td>
+</tr>
