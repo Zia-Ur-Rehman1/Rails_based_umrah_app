@@ -5,17 +5,3 @@
 </turbo-frame>
 
 <%%= render @<%= singular_table_name %> %>
-
-<div class="mt-6 flex gap-4">
-  <%%= link_to "Edit this <%= human_name.downcase %>", <%= edit_helper(type: :path) %>,
-              class: "text-yellow-600 hover:text-yellow-900 underline",
-              data: { turbo_frame: "<%= singular_table_name %>_form" } %>
-
-  <%%= link_to "Back to <%= human_name.pluralize.downcase %>", <%= index_helper(type: :path) %>,
-              class: "text-gray-600 hover:text-gray-900 underline" %>
-
-  <%%= button_to "Delete this <%= human_name.downcase %>", <%= model_resource_name(prefix: "@") %>,
-                 method: :delete,
-                 data: {turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                 class: "text-red-600 hover:text-red-900" %>
-</div>
