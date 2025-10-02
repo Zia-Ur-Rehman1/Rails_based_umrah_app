@@ -1,0 +1,55 @@
+require "test_helper"
+
+class <%= controller_class_name %>Test < ActionDispatch::IntegrationTest
+  setup do
+    @<%= singular_table_name %> = <%= table_name %>(:one)
+  end
+
+  test "should get index" do
+    get <%= index_helper %>_url
+    assert_response :success
+  end
+
+  test "should show <%= singular_table_name %>" do
+    get <%= singular_route_name %>_url(@<%= singular_table_name %>)
+    assert_response :success
+  end
+
+  test "should get new" do
+    get new_<%= singular_route_name %>_url
+    assert_response :success
+  end
+
+  test "should get edit" do
+    get edit_<%= singular_route_name %>_url(@<%= singular_table_name %>)
+    assert_response :success
+  end
+
+  test "should create <%= singular_table_name %> with turbo_stream" do
+    assert_difference("<%= class_name %>.count") do
+      post <%= index_helper %>_url, params: { <%= singular_table_name %>: @<%= singular_table_name %>.attributes.except("id", "created_at", "updated_at") }, as: :turbo_stream
+    end
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_match /turbo-stream/, @response.body
+    assert_includes @response.body, 'turbo-stream action="append"'
+  end
+
+  test "should update <%= singular_table_name %> with turbo_stream" do
+    patch <%= singular_route_name %>_url(@<%= singular_table_name %>), params: { <%= singular_table_name %>: @<%= singular_table_name %>.attributes.except("id", "created_at", "updated_at") }, as: :turbo_stream
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_match /turbo-stream/, @response.body
+    assert_includes @response.body, 'turbo-stream action="replace"'
+  end
+
+  test "should destroy <%= singular_table_name %> with turbo_stream" do
+    assert_difference("<%= class_name %>.count", -1) do
+      delete <%= singular_route_name %>_url(@<%= singular_table_name %>), as: :turbo_stream
+    end
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_match /turbo-stream/, @response.body
+    assert_includes @response.body, "turbo-stream action=\"remove\" target=\"<%= singular_table_name %>_#{@<%= singular_table_name %>.id}\""
+  end
+end

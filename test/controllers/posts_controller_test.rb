@@ -1,6 +1,6 @@
 require "test_helper"
 
-class PostsTest < ActionDispatch::IntegrationTest
+class PostsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @post = posts(:one)
   end
@@ -15,18 +15,12 @@ class PostsTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should create post with turbo stream" do
+  test "should create post" do
     assert_difference("Post.count") do
-      post posts_url,
-           params: { post: {
-             title: @post.title
-           } },
-           as: :turbo_stream
+      post posts_url, params: { post: { title: @post.title } }
     end
 
-    assert_response :success
-    assert_turbo_stream action: "append", target: "posts"
-    assert_turbo_stream action: "replace", target: "post_form"
+    assert_redirected_to post_url(Post.last)
   end
 
   test "should show post" do
@@ -39,23 +33,16 @@ class PostsTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test "should update post with turbo stream" do
-    patch post_url(@post),
-          params: { post: {
-            title: @post.title
-          } },
-          as: :turbo_stream
-
-    assert_response :success
-    assert_turbo_stream action: "replace", target: dom_id(@post)
+  test "should update post" do
+    patch post_url(@post), params: { post: { title: @post.title } }
+    assert_redirected_to post_url(@post)
   end
 
-  test "should destroy post with turbo stream" do
+  test "should destroy post" do
     assert_difference("Post.count", -1) do
-      delete post_url(@post), as: :turbo_stream
+      delete post_url(@post)
     end
 
-    assert_response :success
-    assert_turbo_stream action: "remove", target: dom_id(@post)
+    assert_redirected_to posts_url
   end
 end

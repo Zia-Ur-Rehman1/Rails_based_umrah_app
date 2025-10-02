@@ -1,48 +1,56 @@
+# test/controllers/flights_controller_test.rb
 require "test_helper"
 
 class FlightsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @flight = flights(:one)
+    @outbound = flights(:outbound_flight)
+    @return = flights(:return_flight)
+    @one_way = flights(:one_way_flight)
   end
 
-  test "should get index" do
-    get flights_url
-    assert_response :success
-  end
-
-  test "should get new" do
-    get new_flight_url
-    assert_response :success
-  end
-
-  test "should create flight" do
+  test "should test turbo stream assertion" do
     assert_difference("Flight.count") do
-      post flights_url, params: { flight: { airline: @flight.airline, arrival_airport: @flight.arrival_airport, arrival_time: @flight.arrival_time, departure_airport: @flight.departure_airport, departure_time: @flight.departure_time, flight_number: @flight.flight_number, luggage: @flight.luggage, meal: @flight.meal } }
+      post flights_url, params: { flight: @one_way.attributes.except("id", "created_at", "updated_at") },
+      as: :turbo_stream,
+      headers: { "Accept" => "text/vnd.turbo-stream.html" }
+    end
+    assert_response :success
+    assert_turbo_stream action: "append", target: "flights"
+    assert_turbo_stream action: "replace", target: "flight_form"
+  end
+
+  test "should create flight with turbo stream" do
+    assert_difference("Flight.count") do
+      post flights_url, params: { flight: @one_way.attributes.except("id", "created_at", "updated_at") }, as: :turbo_stream
     end
 
-    assert_redirected_to flight_url(Flight.last)
-  end
-
-  test "should show flight" do
-    get flight_url(@flight)
     assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_match /turbo-stream/, @response.body
+
+    stream = response.parsed_body
+
+    assert_includes stream, 'turbo-stream action="append" target="flights"'
+    assert_includes stream, 'turbo-stream action="replace" target="flight_form"'
   end
 
-  test "should get edit" do
-    get edit_flight_url(@flight)
+  test "should update flight with turbo_stream" do
+    flight = flights(:one_way_flight)
+    patch flight_url(flight), params: { flight: { airline: "Updated Airline" } }, as: :turbo_stream
     assert_response :success
+    assert_match /turbo-stream/, @response.body
+    stream = response.parsed_body
+    assert_includes stream, 'turbo-stream action="replace" target="flight_' + flight.id.to_s + '"'
+    assert_includes stream, "Updated Airline"
   end
 
-  test "should update flight" do
-    patch flight_url(@flight), params: { flight: { airline: @flight.airline, arrival_airport: @flight.arrival_airport, arrival_time: @flight.arrival_time, departure_airport: @flight.departure_airport, departure_time: @flight.departure_time, flight_number: @flight.flight_number, luggage: @flight.luggage, meal: @flight.meal } }
-    assert_redirected_to flight_url(@flight)
-  end
-
-  test "should destroy flight" do
+  test "should destroy flight with turbo_stream" do
     assert_difference("Flight.count", -1) do
-      delete flight_url(@flight)
+      delete flight_url(@one_way), as: :turbo_stream
     end
-
-    assert_redirected_to flights_url
+    assert_response :success
+    assert_equal "text/vnd.turbo-stream.html", response.media_type
+    assert_match /turbo-stream/, @response.body
+    assert_includes @response.body, "turbo-stream action=\"remove\" target=\"flight_#{@one_way.id}\""
   end
 end

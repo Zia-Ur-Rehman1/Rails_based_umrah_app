@@ -55,8 +55,6 @@ module Alsaboor
           next
         end
       end
-      close
-      puts "Scraping completed and driver closed."
     end
 
     def extract_ag_code(deal)
@@ -94,7 +92,7 @@ module Alsaboor
       )
 
       # Inbound Flight
-      find_or_create_or_update_flight(
+      f2 = find_or_create_or_update_flight(
         ag_code: ag_code,
         airline: inbound[:airline],
         flight_number: inbound[:flight_number],
@@ -107,8 +105,9 @@ module Alsaboor
         days: nil,
         agency: "Alsaboor",
         trip_type: 1,
-        connected_flight: f1
+        connected_flight: nil
       )
+      f1.update(connected_flight: f2)
     end
 
     def parse_flight_parts(deal_text)
@@ -120,17 +119,16 @@ module Alsaboor
       out_flight_number = "#{parts[5]} #{parts[6]}"
       out_date = "#{parts[7]} #{parts[8]} #{parts[9]}"
       out_departure_airport, out_arrival_airport = parts[10].split("-")
-
-      out_departure_time = Time.strptime("#{out_date} #{parts[11]}", "%d %b %Y %H:%M")
-      out_arrival_time = Time.strptime("#{out_date} #{parts[12]}", "%d %b %Y %H:%M")
+      out_departure_time = Time.zone.strptime("#{out_date} #{parts[11]}", "%d %b %Y %H:%M")
+      out_arrival_time   = Time.zone.strptime("#{out_date} #{parts[12]}", "%d %b %Y %H:%M")
       out_luggage = parts[13]
 
       # Inbound
       in_flight_number = "#{parts[15]} #{parts[16]}"
       in_date = "#{parts[17]} #{parts[18]} #{parts[19]}"
       in_departure_airport, in_arrival_airport = parts[20].split("-")
-      in_departure_time = Time.strptime("#{in_date} #{parts[21]}", "%d %b %Y %H:%M")
-      in_arrival_time = Time.strptime("#{in_date} #{parts[22]}", "%d %b %Y %H:%M")
+      in_departure_time = Time.zone.strptime("#{in_date} #{parts[21]}", "%d %b %Y %H:%M")
+      in_arrival_time = Time.zone.strptime("#{in_date} #{parts[22]}", "%d %b %Y %H:%M")
       in_luggage = parts[23]
 
       outbound = {
@@ -174,33 +172,3 @@ module Alsaboor
     end
   end
 end
-# scraper = Alsaboor::FlightScrapper.new.login.scrape_deals
-
-# scraper.login.scrape_deals
-# scraper.close
-
-
-# app/jobs/flight_scraping_job.rb
-# class FlightScrapingJob < ApplicationJob
-#   queue_as :default
-
-#   def perform
-#     scraper = Alsaboor::FlightScraper.new(
-#       agent_code: "454",
-#       email: "HASNAINTRAVELANDTOURS@GMAIL.COM",
-#       password: "1707813016"
-#     )
-#     scraper.login.scrape_deals
-#     scraper.close
-#   rescue => e
-#     Rails.logger.error "Scraping failed: #{e.message}"
-#     raise # Will trigger retry mechanism
-#   end
-# end
-
-
-# def scrape
-#   FlightScrapingJob.perform_later
-#   flash[:success] = "Flight scraping started in background"
-#   redirect_to flights_path
-# end

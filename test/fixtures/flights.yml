@@ -1,21 +1,58 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+# test/fixtures/flights.yml
 
-one:
-  airline: MyString
-  flight_number: MyString
-  departure_airport: MyString
-  arrival_airport: MyString
-  departure_time: 2025-06-06 14:26:03
-  arrival_time: 2025-06-06 14:26:03
-  luggage: MyString
-  meal: false
+outbound_flight:
+  airline: "Delta Airlines"
+  flight_number: "DL123"
+  departure_airport: "JFK"
+  arrival_airport: "LAX"
+  departure_time: <%= 1.day.from_now %>
+  arrival_time: <%= 1.day.from_now + 5.hours %>
+  luggage: "2 bags"
+  seats: 150
+  trip_type: 1 # round_trip
+  unique_code: "DL123-JFK-LAX"
+  agency: "TravelCo"
+  days: 7
 
-two:
-  airline: MyString
-  flight_number: MyString
-  departure_airport: MyString
-  arrival_airport: MyString
-  departure_time: 2025-06-06 14:26:03
-  arrival_time: 2025-06-06 14:26:03
-  luggage: MyString
-  meal: false
+return_flight:
+  airline: "Delta Airlines"
+  flight_number: "DL124"
+  departure_airport: "LAX"
+  arrival_airport: "JFK"
+  departure_time: <%= 8.days.from_now %>
+  arrival_time: <%= 8.days.from_now + 5.hours %>
+  luggage: "2 bags"
+  seats: 150
+  trip_type: 1 # round_trip
+  connected_flight_id: <%= ActiveRecord::FixtureSet.identify(:outbound_flight) %>
+  unique_code: "DL124-LAX-JFK"
+  agency: "TravelCo"
+  days: 7
+
+one_way_flight:
+  airline: "American Airlines"
+  flight_number: "AA456"
+  departure_airport: "ORD"
+  arrival_airport: "MIA"
+  departure_time: <%= 2.days.from_now %>
+  arrival_time: <%= 2.days.from_now + 3.hours %>
+  luggage: "1 bag"
+  seats: 120
+  trip_type: "one_way" # one_way
+  unique_code: "AA456-ORD-MIA"
+  agency: "FlyAway"
+  days: 0
+
+via_flight:
+  airline: "United Airlines"
+  flight_number: "UA789"
+  departure_airport: "SFO"
+  arrival_airport: "EWR"
+  departure_time: <%= 3.days.from_now %>
+  arrival_time: <%= 3.days.from_now + 6.hours %>
+  luggage: "1 bag"
+  seats: 180
+  trip_type: 2 # via
+  unique_code: "UA789-SFO-EWR"
+  agency: "GlobalTravel"
+  days: 2
