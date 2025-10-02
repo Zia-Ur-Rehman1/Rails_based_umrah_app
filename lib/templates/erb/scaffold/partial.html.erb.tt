@@ -22,7 +22,7 @@
     <%%= link_to "Edit", edit_<%= singular_table_name %>_path(<%= singular_table_name %>),
                 class: "text-yellow-600 hover:text-yellow-900 mr-2",
                 data: { turbo_frame: "<%= singular_table_name %>_form" } %>
-  <%%= button_to "Delete", <%= "#{singular_name}_path(#{singular_name}, format: :html)" %>,
+  <%%= button_to "Delete", <%= "#{singular_name}_path(#{singular_name})" %>,
       method: :delete,
       form: { class: "inline" },
       data: { turbo_confirm: "Are you sure?" },
