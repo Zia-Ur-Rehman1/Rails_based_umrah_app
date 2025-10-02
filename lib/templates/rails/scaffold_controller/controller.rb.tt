@@ -20,19 +20,25 @@ class <%= controller_class_name %>Controller < ApplicationController
     @<%= singular_table_name %> = <%= orm_class.build(class_name, "#{singular_table_name}_params") %>
 
     if @<%= orm_instance.save %>
+      flash[:notice] = "<%= human_name %> was successfully created."
       respond_to do |format|
         format.turbo_stream do
           render turbo_stream: [
             turbo_stream.append("<%= plural_table_name %>", partial: "<%= plural_table_name %>/<%= singular_table_name %>", locals: { <%= singular_table_name %>: @<%= singular_table_name %> }),
-            turbo_stream.replace("<%= singular_table_name %>_form", partial: "<%= plural_table_name %>/form", locals: { <%= singular_table_name %>: <%= orm_class.build(class_name) %> })
+            turbo_stream.replace("<%= singular_table_name %>_form", partial: "<%= plural_table_name %>/form", locals: { <%= singular_table_name %>: <%= orm_class.build(class_name) %> }),
+            turbo_stream.replace("flash", partial: "shared/flash")
           ]
         end
-        format.html { redirect_to <%= redirect_resource_name %>, notice: "<%= human_name %> was successfully created." }
+        format.html { redirect_to <%= redirect_resource_name %>, notice: flash[:notice] }
       end
     else
+      flash[:alert] = @<%= singular_table_name %>.errors.full_messages.to_sentence
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("<%= singular_table_name %>_form", partial: "<%= plural_table_name %>/form", locals: { <%= singular_table_name %>: @<%= singular_table_name %> })
+          render turbo_stream: [
+            turbo_stream.replace("<%= singular_table_name %>_form", partial: "<%= plural_table_name %>/form", locals: { <%= singular_table_name %>: @<%= singular_table_name %> }),
+            turbo_stream.replace("flash", partial: "shared/flash")
+          ]
         end
         format.html { render :new, status: :unprocessable_entity }
       end
@@ -41,16 +47,24 @@ class <%= controller_class_name %>Controller < ApplicationController
 
   def update
     if @<%= orm_instance.update("#{singular_table_name}_params") %>
+      flash[:notice] = "<%= human_name %> was successfully updated."
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("<%= singular_table_name %>_#{@<%= singular_table_name %>.id}", partial: "<%= plural_table_name %>/<%= singular_table_name %>", locals: { <%= singular_table_name %>: @<%= singular_table_name %> })
+          render turbo_stream: [
+            turbo_stream.replace("<%= singular_table_name %>_#{@<%= singular_table_name %>.id}", partial: "<%= plural_table_name %>/<%= singular_table_name %>", locals: { <%= singular_table_name %>: @<%= singular_table_name %> }),
+            turbo_stream.replace("flash", partial: "shared/flash")
+          ]
         end
-        format.html { redirect_to <%= redirect_resource_name %>, notice: "<%= human_name %> was successfully updated." }
+        format.html { redirect_to <%= redirect_resource_name %>, notice: flash[:notice] }
       end
     else
+      flash[:alert] = @<%= singular_table_name %>.errors.full_messages.to_sentence
       respond_to do |format|
         format.turbo_stream do
-          render turbo_stream: turbo_stream.replace("<%= singular_table_name %>_form", partial: "<%= plural_table_name %>/form", locals: { <%= singular_table_name %>: @<%= singular_table_name %> })
+          render turbo_stream: [
+            turbo_stream.replace("<%= singular_table_name %>_form", partial: "<%= plural_table_name %>/form", locals: { <%= singular_table_name %>: @<%= singular_table_name %> }),
+            turbo_stream.replace("flash", partial: "shared/flash")
+          ]
         end
         format.html { render :edit, status: :unprocessable_entity }
       end
@@ -59,9 +73,15 @@ class <%= controller_class_name %>Controller < ApplicationController
 
   def destroy
     @<%= orm_instance.destroy %>
+    flash[:notice] = "<%= human_name %> was successfully destroyed."
     respond_to do |format|
-      format.turbo_stream { render turbo_stream: turbo_stream.remove("<%= singular_table_name %>_#{@<%= singular_table_name %>.id}") }
-      format.html { redirect_to <%= index_helper %>_path, notice: "<%= human_name %> was successfully destroyed." }
+      format.turbo_stream do
+        render turbo_stream: [
+          turbo_stream.remove("<%= singular_table_name %>_#{@<%= singular_table_name %>.id}"),
+          turbo_stream.replace("flash", partial: "shared/flash")
+        ]
+      end
+      format.html { redirect_to <%= index_helper %>_path, notice: flash[:notice] }
     end
   end
 

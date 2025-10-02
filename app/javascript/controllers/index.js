@@ -15,3 +15,6 @@ application.register("hotels", HotelsController)
 
 import SlideshowController from "./slideshow_controller"
 application.register("slideshow", SlideshowController)
+
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
