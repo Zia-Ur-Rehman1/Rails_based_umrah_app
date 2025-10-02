@@ -1,0 +1,7 @@
+<p class="text-green-600"><%%= notice %></p>
+
+<turbo-frame id="<%= singular_table_name %>_form" class="block mb-8">
+  <%# Form will appear here when editing inline %>
+</turbo-frame>
+
+<%%= render @<%= singular_table_name %> %>

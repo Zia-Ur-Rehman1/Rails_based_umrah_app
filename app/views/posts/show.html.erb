@@ -5,17 +5,3 @@
 </turbo-frame>
 
 <%= render @post %>
-
-<div class="mt-6 flex gap-4">
-  <%= link_to "Edit this post", edit_post_path(@post),
-              class: "text-yellow-600 hover:text-yellow-900 underline",
-              data: { turbo_frame: "post_form" } %>
-
-  <%= link_to "Back to posts", posts_path,
-              class: "text-gray-600 hover:text-gray-900 underline" %>
-
-  <%= button_to "Delete this post", @post,
-                 method: :delete,
-                 data: {turbo_method: :delete, turbo_confirm: "Are you sure?" },
-                 class: "text-red-600 hover:text-red-900" %>
-</div>
